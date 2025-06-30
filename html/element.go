@@ -3,66 +3,64 @@ package html
 import (
 	"strings"
 
-	"github.com/sethpollack/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
-type element struct {
-	tag      string
-	children []rend.Node
-	attrs    []rend.Node
+type ElementNode struct {
+	Tag      string
+	Children []rend.Node
+	Attrs    []rend.Node
 }
 
-func Element(tag string, children ...rend.Node) rend.Node {
-	e := &element{
-		tag: tag,
+func Element(tag string, children ...rend.Node) *ElementNode {
+	e := &ElementNode{
+		Tag: tag,
 	}
 
 	for _, child := range children {
 		switch child.(type) {
-		case *attrs, *attribute:
-			e.attrs = append(e.attrs, child)
+		case *AttributesNode, *AttributeNode:
+			e.Attrs = append(e.Attrs, child)
 		default:
-			e.children = append(e.children, child)
+			e.Children = append(e.Children, child)
 		}
 	}
 
 	return e
 }
 
-func (el *element) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
-	_, err := b.Write([]byte("<" + el.tag))
+func (el *ElementNode) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
+	_, err := b.WriteString("<" + el.Tag)
 	if err != nil {
 		return err
 	}
 
-	for _, child := range el.attrs {
+	for _, child := range el.Attrs {
 		if child == nil {
 			continue
 		}
 
-		err := child.Render(diff, root, t, b)
-		if err != nil {
+		if err := child.Render(diff, root, t, b); err != nil {
 			return err
 		}
 	}
 
-	_, err = b.Write([]byte(">"))
+	_, err = b.WriteString(">")
 	if err != nil {
 		return err
 	}
 
-	for _, child := range el.children {
+	for _, child := range el.Children {
 		if child == nil {
 			continue
 		}
 
-		err := child.Render(diff, root, t, b)
-		if err != nil {
+		if err := child.Render(diff, root, t, b); err != nil {
 			return err
 		}
 	}
 
-	_, err = b.Write([]byte("</" + el.tag + ">"))
+	_, err = b.WriteString("</" + el.Tag + ">")
 	if err != nil {
 		return err
 	}

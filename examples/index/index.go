@@ -3,11 +3,11 @@ package index
 import (
 	"fmt"
 
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type Live struct {
@@ -60,19 +60,19 @@ func (i *Live) Render(child rend.Node) (rend.Node, error) {
 	return html.Div(
 		html.Div(
 			html.Ol(
-				std.Range(i.fectchFlashes(), func(flash string) rend.Node {
+				dynamic.Range(i.fectchFlashes(), func(flash string) rend.Node {
 					return html.Li(
-						std.Text(&flash),
+						dynamic.Text(flash),
 					)
 				}),
 			),
 		),
 		html.Ol(
-			std.Range(i.Links, func(link string) rend.Node {
+			dynamic.Range(i.Links, func(link string) rend.Node {
 				return html.Li(
 					html.A(
-						html.AHrefAttr(&link),
-						std.Text(&link),
+						html.HrefAttr(link),
+						dynamic.Text(link),
 						html.DataAttr("phx-link", "patch"),
 						html.DataAttr("phx-link-state", "push"),
 					),
@@ -80,7 +80,7 @@ func (i *Live) Render(child rend.Node) (rend.Node, error) {
 			}),
 		),
 		html.Div(
-			std.DynamicNode(child),
+			dynamic.Wrap(child),
 		),
 	), nil
 }

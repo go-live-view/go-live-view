@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sethpollack/go-live-view/channel"
-	"github.com/sethpollack/go-live-view/params"
+	"github.com/go-live-view/go-live-view/channel"
+	"github.com/go-live-view/go-live-view/params"
 )
 
 var _ channel.Channel = &lvuChannel{}

@@ -3,17 +3,17 @@ package router
 import (
 	"testing"
 
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func testLayout(_ ...rend.Node) rend.Node {
-	return std.Noop()
+	return nil
 }
 
 type testLive struct {
@@ -22,7 +22,7 @@ type testLive struct {
 
 func (t *testLive) Render(n rend.Node) (rend.Node, error) {
 	return html.Div(
-		std.Text(t.name),
+		dynamic.Text(t.name),
 		n,
 	), nil
 }

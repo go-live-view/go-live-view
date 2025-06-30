@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sethpollack/go-live-view/channel"
-	"github.com/sethpollack/go-live-view/channel/transport/longpoll"
-	"github.com/sethpollack/go-live-view/channel/transport/websocket"
-	"github.com/sethpollack/go-live-view/internal/lvchan"
-	"github.com/sethpollack/go-live-view/internal/lvuchan"
-	lv "github.com/sethpollack/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/channel"
+	"github.com/go-live-view/go-live-view/channel/transport/longpoll"
+	"github.com/go-live-view/go-live-view/channel/transport/websocket"
+	"github.com/go-live-view/go-live-view/internal/lvchan"
+	"github.com/go-live-view/go-live-view/internal/lvuchan"
+	lv "github.com/go-live-view/go-live-view/liveview"
 )
 
 type handlerOption func(*handler)
@@ -92,7 +92,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		default:
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(fmt.Sprintf("Error: %s", err.Error())))
+			fmt.Fprintf(w, "Error: %s", err.Error())
 			return
 		}
 	}

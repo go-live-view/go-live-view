@@ -8,23 +8,23 @@ import (
 	"os/signal"
 	"time"
 
-	comp "github.com/sethpollack/go-live-view/components"
-	"github.com/sethpollack/go-live-view/examples/async"
-	"github.com/sethpollack/go-live-view/examples/broadcast"
-	"github.com/sethpollack/go-live-view/examples/charts"
-	"github.com/sethpollack/go-live-view/examples/comprehension"
-	"github.com/sethpollack/go-live-view/examples/counter"
-	"github.com/sethpollack/go-live-view/examples/flash"
-	"github.com/sethpollack/go-live-view/examples/index"
-	"github.com/sethpollack/go-live-view/examples/js"
-	"github.com/sethpollack/go-live-view/examples/nested"
-	"github.com/sethpollack/go-live-view/examples/scroll"
-	"github.com/sethpollack/go-live-view/examples/ssnav"
-	"github.com/sethpollack/go-live-view/examples/stream"
-	"github.com/sethpollack/go-live-view/examples/uploads"
-	"github.com/sethpollack/go-live-view/handler"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/router"
+	"github.com/go-live-view/go-live-view/examples/async"
+	"github.com/go-live-view/go-live-view/examples/broadcast"
+	"github.com/go-live-view/go-live-view/examples/charts"
+	"github.com/go-live-view/go-live-view/examples/comp"
+	"github.com/go-live-view/go-live-view/examples/comprehension"
+	"github.com/go-live-view/go-live-view/examples/counter"
+	"github.com/go-live-view/go-live-view/examples/flash"
+	"github.com/go-live-view/go-live-view/examples/index"
+	"github.com/go-live-view/go-live-view/examples/js"
+	"github.com/go-live-view/go-live-view/examples/nested"
+	"github.com/go-live-view/go-live-view/examples/scroll"
+	"github.com/go-live-view/go-live-view/examples/ssnav"
+	"github.com/go-live-view/go-live-view/examples/stream"
+	"github.com/go-live-view/go-live-view/examples/uploads"
+	"github.com/go-live-view/go-live-view/handler"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/router"
 )
 
 const appJS = `
@@ -45,7 +45,11 @@ const appJS = `
 		}
 	}
 
-	const lv = new LiveView.LiveSocket("/live", Phoenix.Socket, {hooks: Hooks});
+	const lv = new LiveView.LiveSocket("/live", Phoenix.Socket, {
+		hooks: Hooks,
+		params: { liveview_version: "1.0.17" }
+	});
+
 	lv.connect();
 
 	window.liveSocket = lv;
@@ -59,6 +63,7 @@ func setupRoutes() lv.Router {
 
 	root := rt.Group("/", &index.Live{
 		Links: []string{
+			"/",
 			"/async",
 			"/broadcast",
 			"/chart",

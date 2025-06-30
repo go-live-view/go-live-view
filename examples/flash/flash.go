@@ -1,11 +1,10 @@
 package flash
 
 import (
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type Live struct {
@@ -30,25 +29,25 @@ func (l *Live) Event(s lv.Socket, event string, p params.Params) error {
 func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 	return html.Div(
 		html.Button(
-			std.Text("patch"),
+			html.Text("patch"),
 			html.Attr("phx-click", "patch"),
 		),
 		html.Button(
-			std.Text("navigate"),
+			html.Text("navigate"),
 			html.Attr("phx-click", "navigate"),
 		),
 		html.Button(
-			std.Text("redirect"),
+			html.Text("redirect"),
 			html.Attr("phx-click", "redirect"),
 		),
 		html.Button(
-			std.Text("flash"),
+			html.Text("flash"),
 			html.Attr("phx-click", "lv:flash"),
 			html.Attr("phx-value-key", "info"),
 			html.Attr("phx-value-msg", "from event"),
 		),
 		html.Button(
-			std.Text("no flash navigate"),
+			html.Text("no flash navigate"),
 			html.Attr("phx-click", "no-flash-navigate"),
 		),
 	), nil

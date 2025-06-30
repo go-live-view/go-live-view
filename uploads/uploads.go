@@ -2,11 +2,12 @@ package uploads
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 	"sync"
 
-	"github.com/sethpollack/go-live-view/internal/ref"
-	"github.com/sethpollack/go-live-view/params"
+	"github.com/go-live-view/go-live-view/internal/ref"
+	"github.com/go-live-view/go-live-view/params"
 )
 
 type Uploads struct {
@@ -260,19 +261,27 @@ func (c *Config) PreflightErrors() [][]string {
 	return errors
 }
 
-func (c *Config) PreflightRefs() *string {
+func (c *Config) Accepts() string {
+	if c.Accept == nil {
+		return ""
+	}
+
+	return strings.Join(c.Accept, ",")
+}
+
+func (c *Config) PreflightRefs() string {
 	return getRefs(c, func(e *Entry) bool {
 		return e.Preflight
 	})
 }
 
-func (c *Config) ActiveRefs() *string {
+func (c *Config) ActiveRefs() string {
 	return getRefs(c, func(e *Entry) bool {
 		return true
 	})
 }
 
-func (c *Config) DoneRefs() *string {
+func (c *Config) DoneRefs() string {
 	return getRefs(c, func(e *Entry) bool {
 		return e.Done
 	})
@@ -292,11 +301,11 @@ func (c *Config) validate() {
 			entry.Valid = false
 		}
 
-		if contains(c.Accept, "*") {
+		if slices.Contains(c.Accept, "*") {
 			continue
 		}
 
-		if !contains(c.MimeTypes, entry.Meta.FileType) {
+		if !slices.Contains(c.MimeTypes, entry.Meta.FileType) {
 			entry.Errors = append(entry.Errors, "Invalid file type")
 			entry.Valid = false
 		}
@@ -307,7 +316,7 @@ func (c *Config) reset() {
 	c.Entries = nil
 }
 
-func getRefs(c *Config, f func(e *Entry) bool) *string {
+func getRefs(c *Config, f func(e *Entry) bool) string {
 	refs := []string{}
 	for _, entry := range c.Entries {
 		if f(entry) {
@@ -315,16 +324,9 @@ func getRefs(c *Config, f func(e *Entry) bool) *string {
 		}
 	}
 
-	res := strings.Join(refs, ",")
-
-	return &res
-}
-
-func contains(arr []string, str string) bool {
-	for _, a := range arr {
-		if a == str {
-			return true
-		}
+	if len(refs) == 0 {
+		return ""
 	}
-	return false
+
+	return strings.Join(refs, ",")
 }

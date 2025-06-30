@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-live-view/go-live-view/html"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 	"github.com/rs/xid"
-	"github.com/sethpollack/go-live-view/html"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
 )
 
 const flashKey = "__phoenix_flash__"

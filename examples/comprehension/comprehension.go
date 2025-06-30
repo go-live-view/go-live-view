@@ -2,12 +2,13 @@ package comprehension
 
 import (
 	"fmt"
+	"strconv"
 
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type User struct {
@@ -46,23 +47,23 @@ func (l *Live) Event(s lv.Socket, event string, p params.Params) error {
 func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 	return html.Div(
 		html.Button(
-			std.Text("Add User"),
+			html.Text("Add User"),
 			html.Attrs(
 				html.Attr("phx-click", "add-user"),
 			),
 		),
 		html.Table(
 			html.Tbody(
-				std.Range[*User](l.users, func(u *User) rend.Node {
+				dynamic.Range(l.users, func(u *User) rend.Node {
 					return html.Tr(
 						html.Td(
-							std.Text(&u.Name),
+							dynamic.Text(u.Name),
 							html.Button(
 								html.Attrs(
 									html.Attr("phx-click", "delete-user"),
-									html.Attr("phx-value-id", &u.ID),
+									dynamic.Wrap(html.Attr("phx-value-id", strconv.Itoa(u.ID))),
 								),
-								std.Text("Delete"),
+								html.Text("Delete"),
 							),
 						),
 					)

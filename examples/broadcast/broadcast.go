@@ -3,11 +3,11 @@ package broadcast
 import (
 	"time"
 
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type Live struct {
@@ -50,7 +50,7 @@ func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 	time := l.Time.Format("3:4:5 pm")
 	return html.Div(
 		html.H1(
-			std.Text(&time),
+			dynamic.Text(time),
 		),
 	), nil
 }

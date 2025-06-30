@@ -3,12 +3,12 @@ package async
 import (
 	"time"
 
-	"github.com/sethpollack/go-live-view/async"
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/async"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type User struct {
@@ -31,16 +31,16 @@ func (l *Live) Mount(s lv.Socket, _ params.Params) error {
 func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 	return html.Div(
 		html.H1(
-			std.GoEmbed(func() rend.Node {
+			dynamic.GoEmbed(func() rend.Node {
 				switch l.User.State() {
 				case async.Loading:
 					loadingMessage := "Loading..."
-					return std.Text(&loadingMessage)
+					return dynamic.Text(loadingMessage)
 				case async.Failed:
 					err := l.User.Error().Error()
-					return std.Textf("failed to load user: %s", &err)
+					return dynamic.Textf("failed to load user: %s", err)
 				default:
-					return std.Text(&l.User.Value().Name)
+					return dynamic.Text(l.User.Value().Name)
 				}
 			}),
 		),

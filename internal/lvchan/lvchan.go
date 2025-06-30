@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sethpollack/go-live-view/channel"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/channel"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 var _ channel.Channel = &lvChannel{}
@@ -36,14 +36,16 @@ func New(lc lifecycle) func() channel.Channel {
 }
 
 func (l *lvChannel) Join(s channel.Socket, p any) error {
-	rend, err := l.lc.Join(lv.NewSocket(s), params.FromAny(p))
+	params := params.FromAny(p)
+
+	rend, err := l.lc.Join(lv.NewSocket(s), params)
 	if err != nil {
 		return err
 	}
 
 	return s.Push("", map[string]any{
 		"rendered":         rend,
-		"liveview_version": lv.Version,
+		"liveview_version": params.Map("params").String("liveview_version"),
 	})
 }
 

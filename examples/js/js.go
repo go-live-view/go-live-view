@@ -1,10 +1,9 @@
 package js
 
 import (
-	"github.com/sethpollack/go-live-view/html"
-	"github.com/sethpollack/go-live-view/js"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/html"
+	"github.com/go-live-view/go-live-view/js"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type Live struct {
@@ -25,7 +24,7 @@ func hide_modal() string {
 
 func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 	return html.Div(
-		std.Text("Example JS Modal"),
+		html.Text("Example JS Modal"),
 		html.Div(
 			html.IdAttr("modal"),
 			html.Attr("phx-remove", hide_modal()),
@@ -34,11 +33,11 @@ func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 				html.Attr("phx-click-away", hide_modal()),
 				html.Attr("phx-window-keydown", hide_modal()),
 				html.Attr("phx-key", "escape"),
-				std.Text("Model Content"),
+				html.Text("Model Content"),
 				html.Button(
 					html.ClassAttr("phx-modal-close"),
 					html.Attr("phx-click", hide_modal()),
-					std.Text("✖"),
+					html.Text("✖"),
 				),
 			),
 		),

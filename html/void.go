@@ -3,17 +3,17 @@ package html
 import (
 	"strings"
 
-	"github.com/sethpollack/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
-type void struct {
-	tag   string
-	attrs []rend.Node
+type VoidNode struct {
+	Tag   string
+	Attrs []rend.Node
 }
 
-func Void(tag string, children ...rend.Node) *void {
-	v := &void{
-		tag: tag,
+func Void(tag string, children ...rend.Node) *VoidNode {
+	v := &VoidNode{
+		Tag: tag,
 	}
 
 	for _, attr := range children {
@@ -22,28 +22,31 @@ func Void(tag string, children ...rend.Node) *void {
 		}
 
 		switch attr.(type) {
-		case *attrs, *attribute:
-			v.attrs = append(v.attrs, attr)
+		case *AttributesNode, *AttributeNode:
+			v.Attrs = append(v.Attrs, attr)
 		}
 	}
 
 	return v
 }
 
-func (v *void) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
-	_, err := b.Write([]byte("<" + v.tag))
+func (v *VoidNode) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
+	_, err := b.WriteString("<" + v.Tag)
 	if err != nil {
 		return err
 	}
 
-	for _, child := range v.attrs {
-		err := child.Render(diff, root, t, b)
-		if err != nil {
+	for _, child := range v.Attrs {
+		if child == nil {
+			continue
+		}
+
+		if err := child.Render(diff, root, t, b); err != nil {
 			return err
 		}
 	}
 
-	_, err = b.Write([]byte("/>"))
+	_, err = b.WriteString("/>")
 	if err != nil {
 		return err
 	}

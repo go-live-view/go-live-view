@@ -1,11 +1,11 @@
 package ssnav
 
 import (
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type Live struct {
@@ -21,18 +21,18 @@ func (u *Live) Event(s lv.Socket, e string, p params.Params) error {
 func (u *Live) Render(child rend.Node) (rend.Node, error) {
 	return html.Div(
 		html.H1(
-			std.Text("Server Navigation"),
+			html.Text("Server Navigation"),
 		),
 		html.Button(
 			html.A(
-				std.Text("Show"),
+				html.Text("Show"),
 				html.Attr("phx-click", "navigate"),
 				html.Attr("phx-value-href", "/ssnav/1"),
 			),
 		),
 		html.Button(
 			html.A(
-				std.Text("Edit"),
+				html.Text("Edit"),
 				html.Attr("phx-click", "navigate"),
 				html.Attr("phx-value-href", "/ssnav/1/edit"),
 			),
@@ -53,7 +53,7 @@ func (l *ShowLive) Params(s lv.Socket, p params.Params) error {
 func (l *ShowLive) Render(_ rend.Node) (rend.Node, error) {
 	return html.Div(
 		html.H1(
-			std.Textf("Show %s", &l.id),
+			dynamic.Textf("Show %s", l.id),
 		),
 	), nil
 }
@@ -70,7 +70,7 @@ func (l *EditLive) Params(s lv.Socket, p params.Params) error {
 func (l *EditLive) Render(_ rend.Node) (rend.Node, error) {
 	return html.Div(
 		html.H1(
-			std.Textf("Edit %s", &l.id),
+			dynamic.Textf("Edit %s", l.id),
 		),
 	), nil
 }
