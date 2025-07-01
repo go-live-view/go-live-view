@@ -67,13 +67,13 @@ func (p Params) Slice(key ...string) []Params {
 
 		switch v := n.(type) {
 		case []any:
-			var result []Params
+			result := make([]Params, 0, len(v))
 			for _, item := range v {
 				result = append(result, FromAny(item))
 			}
 			return result
 		case []map[string]any:
-			var result []Params
+			result := make([]Params, 0, len(v))
 			for _, item := range v {
 				result = append(result, Params(item))
 			}
@@ -253,11 +253,11 @@ func (p Params) ByteSlice(key ...string) []byte {
 		case []byte:
 			return v
 		default:
-			return nil
+			return []byte{}
 		}
 	}
 
-	return nil
+	return []byte{}
 }
 
 func slice[T any](m Params, key ...string) []T {
@@ -269,7 +269,7 @@ func slice[T any](m Params, key ...string) []T {
 
 		switch v := n.(type) {
 		case []any:
-			var a []T
+			a := make([]T, 0, len(v))
 			for _, n := range v {
 				switch n := n.(type) {
 				case T:
@@ -278,9 +278,9 @@ func slice[T any](m Params, key ...string) []T {
 			}
 			return a
 		default:
-			return nil
+			return []T{}
 		}
 	}
 
-	return nil
+	return []T{}
 }
