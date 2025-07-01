@@ -4,12 +4,14 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
+	stdhtml "html"
 
 	"github.com/go-json-experiment/json"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type Live struct {
@@ -80,11 +82,13 @@ func (l *Live) Event(s lv.Socket, event string, _ params.Params) error {
 
 func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 	b, _ := json.Marshal(l.Options, json.DefaultOptionsV2())
-	options := string(b)
+	options := stdhtml.EscapeString(string(b))
 
 	return html.Div(
-		html.IdAttr("chart"),
-		html.Attr("phx-hook", "Chart"),
-		html.Attr("data-options", &options),
+		html.Attrs(
+			html.IdAttr("chart"),
+			html.Attr("phx-hook", "Chart"),
+			dynamic.Wrap(html.Attr("data-options", options)),
+		),
 	), nil
 }

@@ -1,15 +1,14 @@
 package router
 
 import (
-	"github.com/sethpollack/go-live-view/html"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
+	"github.com/go-live-view/go-live-view/html"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 type notFound struct{}
 
 func (n *notFound) Render(_ rend.Node) (rend.Node, error) {
 	return html.Div(
-		std.Text("404 Not Found"),
+		html.Text("404 Not Found"),
 	), nil
 }

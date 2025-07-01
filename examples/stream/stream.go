@@ -3,13 +3,13 @@ package stream
 import (
 	"fmt"
 
-	"github.com/sethpollack/go-live-view/html"
-	"github.com/sethpollack/go-live-view/internal/ref"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
-	"github.com/sethpollack/go-live-view/stream"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	"github.com/go-live-view/go-live-view/internal/ref"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/stream"
 )
 
 type Live struct {
@@ -63,7 +63,7 @@ func (l *Live) Event(s lv.Socket, event string, p params.Params) error {
 func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 	return html.Div(
 		html.Button(
-			std.Text("Add User"),
+			html.Text("Add User"),
 			html.Attrs(
 				html.Attr("phx-click", "add-user"),
 			),
@@ -74,20 +74,20 @@ func (l *Live) Render(_ rend.Node) (rend.Node, error) {
 					html.IdAttr("stream-users"),
 					html.Attr("phx-update", "stream"),
 				),
-				std.Stream(l.userStream.Get(), func(item stream.Item) rend.Node {
+				dynamic.Stream(l.userStream.Get(), func(item stream.Item) rend.Node {
 					u := item.Item.(*User)
 					return html.Tr(
 						html.Attrs(
-							html.IdAttr(&item.DomID),
+							dynamic.Wrap(html.IdAttr(item.DomID)),
 						),
 						html.Td(
-							std.Text(&u.Name),
+							dynamic.Text(u.Name),
 							html.Button(
 								html.Attrs(
 									html.Attr("phx-click", "delete-user"),
-									html.Attr("phx-value-id", &item.DomID),
+									dynamic.Wrap(html.Attr("phx-value-id", item.DomID)),
 								),
-								std.Text("Delete"),
+								html.Text("Delete"),
 							),
 						),
 					)

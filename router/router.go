@@ -6,10 +6,10 @@ import (
 	"path"
 	"strings"
 
-	"github.com/sethpollack/go-live-view/internal/tree"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/internal/tree"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
 var _ lv.Route = (*route)(nil)

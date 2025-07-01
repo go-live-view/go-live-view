@@ -3,13 +3,13 @@ package uploads
 import (
 	"fmt"
 
-	comp "github.com/sethpollack/go-live-view/components"
-	"github.com/sethpollack/go-live-view/html"
-	lv "github.com/sethpollack/go-live-view/liveview"
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/std"
-	"github.com/sethpollack/go-live-view/uploads"
+	"github.com/go-live-view/go-live-view/dynamic"
+	"github.com/go-live-view/go-live-view/html"
+	lv "github.com/go-live-view/go-live-view/liveview"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/phx"
+	"github.com/go-live-view/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/uploads"
 )
 
 type Live struct {
@@ -17,18 +17,16 @@ type Live struct {
 }
 
 func New() *Live {
-	return &Live{
-		uploads: uploads.New(),
-	}
-}
-
-func (l *Live) Mount(s lv.Socket, p params.Params) error {
-	l.uploads.AllowUpload("mydoc",
+	u := uploads.New()
+	u.AllowUpload("mydoc",
 		uploads.WithAccept(".pdf"),
 		uploads.WithAutoUpload(false),
 		uploads.WithMaxEntries(1),
 	)
-	return nil
+
+	return &Live{
+		uploads: u,
+	}
 }
 
 func (l *Live) Event(s lv.Socket, event string, p params.Params) error {
@@ -50,16 +48,16 @@ func (l *Live) Uploads() *uploads.Uploads {
 }
 
 func (l *Live) Render(_ rend.Node) (rend.Node, error) {
-	return std.Component(
+	return dynamic.Component(
 		html.Div(
 			html.Form(
 				html.Attr("id", "upload-form"),
 				html.Attr("phx-submit", "save"),
 				html.Attr("phx-change", "validate"),
-				comp.UploadInput(l.uploads.GetByName("mydoc")),
+				phx.FileInput(l.uploads.GetByName("mydoc")),
 				html.Button(
 					html.Attr("type", "submit"),
-					std.Text("Upload"),
+					html.Text("Upload"),
 				),
 			),
 		)), nil

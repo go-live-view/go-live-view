@@ -4,10 +4,10 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/go-live-view/go-live-view/channel"
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
 	"github.com/gorilla/websocket"
-	"github.com/sethpollack/go-live-view/channel"
 )
 
 var _ channel.Transport = (*wsTransport)(nil)

@@ -3,20 +3,20 @@ package html
 import (
 	"strings"
 
-	"github.com/sethpollack/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
-type comment struct {
-	comment string
+type CommentNode struct {
+	Comment string
 }
 
-func Comment(s string) rend.Node {
-	return &comment{s}
+func Comment(s string) *CommentNode {
+	return &CommentNode{s}
 }
 
-func (c *comment) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
+func (c *CommentNode) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
 	b.WriteString("<!--")
-	b.WriteString(c.comment)
+	b.WriteString(c.Comment)
 	b.WriteString("-->")
 	return nil
 }

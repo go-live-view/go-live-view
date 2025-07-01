@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/sethpollack/go-live-view/internal/ref"
+	"github.com/go-live-view/go-live-view/internal/ref"
 )
 
 type Root struct {

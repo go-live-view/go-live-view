@@ -3,7 +3,7 @@ package longpoll
 import (
 	"net/http"
 
-	"github.com/sethpollack/go-live-view/channel"
+	"github.com/go-live-view/go-live-view/channel"
 )
 
 var _ channel.Transport = (*lpTransport)(nil)

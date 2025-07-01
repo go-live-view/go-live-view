@@ -3,13 +3,10 @@ package liveview
 import (
 	"net/http"
 
-	"github.com/sethpollack/go-live-view/params"
-	"github.com/sethpollack/go-live-view/rend"
-	"github.com/sethpollack/go-live-view/uploads"
+	"github.com/go-live-view/go-live-view/params"
+	"github.com/go-live-view/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/uploads"
 )
-
-// TODO: need a better way to set this.
-var Version = "1.0.4"
 
 type View interface {
 	Render(rend.Node) (rend.Node, error)

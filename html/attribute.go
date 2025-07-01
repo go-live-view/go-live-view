@@ -2,125 +2,60 @@ package html
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
-	"github.com/sethpollack/go-live-view/rend"
+	"github.com/go-live-view/go-live-view/rend"
 )
 
-type attribute struct {
-	tag     string
-	value   string
-	dynamic bool
+type AttributeNode struct {
+	Tag    string
+	Values []string
 }
 
-func Attr(tagName string, value ...any) rend.Node {
-	return tag(tagName, value...)
+func Attr(tag string, values ...string) *AttributeNode {
+	return &AttributeNode{
+		Tag:    tag,
+		Values: values,
+	}
 }
 
-func (attr *attribute) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
-	if !diff || !attr.dynamic {
-		if attr.value == "" {
-			_, err := b.Write([]byte(fmt.Sprintf(" %s", attr.tag)))
-			return err
-		}
-		_, err := b.Write([]byte(fmt.Sprintf(" %s=\"%s\"", attr.tag, attr.value)))
+func (attr *AttributeNode) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
+	if len(attr.Values) == 0 {
+		_, err := fmt.Fprintf(b, " %s", attr.Tag)
 		return err
 	}
 
-	_, err := b.Write([]byte(fmt.Sprintf(" %s=", attr.tag)))
+	_, err := fmt.Fprintf(b, " %s=\"", attr.Tag)
 	if err != nil {
 		return err
 	}
 
-	if attr.value == "" {
-		t.AddDynamic("\"\"")
-	} else {
-		t.AddDynamic(attr.value)
+	for _, value := range attr.Values {
+		_, err = b.WriteString(value)
+		if err != nil {
+			return err
+		}
 	}
 
-	t.AddStatic(b.String())
-	b.Reset()
-
-	return nil
+	_, err = b.WriteString("\"")
+	return err
 }
 
-func tag(tag string, value ...any) rend.Node {
-	if len(value) == 0 {
-		return &attribute{
-			tag: tag,
-		}
-	}
-
-	switch val := value[0].(type) {
-	case *string:
-		return &attribute{
-			tag:     tag,
-			value:   *val,
-			dynamic: true,
-		}
-	case *int:
-		return &attribute{
-			tag:     tag,
-			value:   fmt.Sprintf("%d", *val),
-			dynamic: true,
-		}
-	case *bool:
-		return &attribute{
-			tag:     tag,
-			value:   fmt.Sprintf("%t", *val),
-			dynamic: true,
-		}
-	case bool:
-		return &attribute{
-			tag:   tag,
-			value: fmt.Sprintf("%t", val),
-		}
-	case int, float32, float64:
-		return &attribute{
-			tag:   tag,
-			value: fmt.Sprintf("%d", val),
-		}
-	case string:
-		return &attribute{
-			tag:   tag,
-			value: val,
-		}
-	default:
-		panic(fmt.Sprintf("invalid type %T for Attr", value[0]))
-	}
-}
-
-type attrs struct {
+type AttributesNode struct {
 	Attrs []rend.Node
 }
 
-func Attrs(children ...rend.Node) rend.Node {
-	return &attrs{Attrs: children}
+func Attrs(children ...rend.Node) *AttributesNode {
+	return &AttributesNode{Attrs: children}
 }
 
-func Values(prefix string, values map[string]any) rend.Node {
-	attrs := []rend.Node{}
-	keys := make([]string, 0, len(values))
-
-	for k := range values {
-		keys = append(keys, k)
-	}
-
-	sort.Strings(keys)
-
-	for _, k := range keys {
-		v := values[k]
-		attrs = append(attrs, Attr(prefix+k, v))
-	}
-
-	return Attrs(attrs...)
-}
-
-func (g *attrs) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
+func (g *AttributesNode) Render(diff bool, root *rend.Root, t *rend.Rend, b *strings.Builder) error {
 	for _, child := range g.Attrs {
-		err := child.Render(diff, root, t, b)
-		if err != nil {
+		if child == nil {
+			continue
+		}
+
+		if err := child.Render(diff, root, t, b); err != nil {
 			return err
 		}
 	}
