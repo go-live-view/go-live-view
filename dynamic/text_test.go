@@ -3,6 +3,8 @@ package dynamic
 import (
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestText(t *testing.T) {
@@ -19,12 +21,8 @@ func TestText(t *testing.T) {
 			node := Text(tc.input)
 			var b strings.Builder
 			err := node.Render(false, nil, nil, &b)
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if b.String() != tc.expected {
-				t.Errorf("expected %q, got %q", tc.expected, b.String())
-			}
+			assert.NoError(t, err)
+			assert.Equal(t, tc.expected, b.String())
 		})
 	}
 }
