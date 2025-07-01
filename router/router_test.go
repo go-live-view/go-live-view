@@ -3,7 +3,6 @@ package router
 import (
 	"testing"
 
-	"github.com/go-live-view/go-live-view/dynamic"
 	"github.com/go-live-view/go-live-view/html"
 	lv "github.com/go-live-view/go-live-view/liveview"
 	"github.com/go-live-view/go-live-view/params"
@@ -22,7 +21,7 @@ type testLive struct {
 
 func (t *testLive) Render(n rend.Node) (rend.Node, error) {
 	return html.Div(
-		dynamic.Text(t.name),
+		html.Text(t.name),
 		n,
 	), nil
 }
