@@ -6,6 +6,7 @@
 [![Test Status](https://img.shields.io/github/actions/workflow/status/go-live-view/go-live-view/test.yml?logo=github&style=flat-square)](https://github.com/go-live-view/go-live-view/actions)
 [![Release](https://img.shields.io/github/v/release/go-live-view/go-live-view?logo=github&style=flat-square)](https://github.com/go-live-view/go-live-view/releases/latest)
 [![License](https://img.shields.io/github/license/go-live-view/go-live-view?logo=opensourceinitiative&logoColor=white&style=flat-square)](https://github.com/go-live-view/go-live-view/blob/main/LICENSE)
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-Documentation-blue?style=flat-square)](https://deepwiki.com/go-live-view/go-live-view)
 
 
 Go backend library for the [Phoenix LiveView](httpss://github.com/phoenixframework/live_view) JS client. It enables rich, real-time user experiences with server-rendered HTML, written in Go.
