@@ -1,0 +1,6 @@
+ignore:
+  - "cmd/codegen"
+  - "examples"
+  - "html/elements.go"
+  - "testutils"
+
