@@ -29,14 +29,6 @@ func New() *Live {
 	}
 }
 
-func (l *Live) Mount(s lv.Socket, p params.Params) error {
-	// Upload is already configured in New()
-	if s != nil {
-		// Any socket-specific setup can go here
-	}
-	return nil
-}
-
 func (l *Live) Event(s lv.Socket, event string, p params.Params) error {
 	if event == "validate" {
 		l.uploads.OnValidate(p)
