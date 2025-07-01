@@ -68,7 +68,7 @@ func Dispatch(event string, args *DispatchArgs) Operation {
 	}
 
 	if a.Bubbles == nil {
-		a.Bubbles = Bool(true)
+		a.Bubbles = boolPtr(true)
 	}
 	return Operation{"dispatch", a}
 }
@@ -100,19 +100,19 @@ func Toggle(event string, args *ToggleArgs) Operation {
 	}
 
 	a.In = [3][]string{
-		classNames(args.In[0]),
-		classNames(args.In[1]),
-		classNames(args.In[2]),
+		classNames(a.ToggleArgs.In[0]),
+		classNames(a.ToggleArgs.In[1]),
+		classNames(a.ToggleArgs.In[2]),
 	}
 
 	a.Out = [3][]string{
-		classNames(args.Out[0]),
-		classNames(args.Out[1]),
-		classNames(args.Out[2]),
+		classNames(a.ToggleArgs.Out[0]),
+		classNames(a.ToggleArgs.Out[1]),
+		classNames(a.ToggleArgs.Out[2]),
 	}
 
 	if a.Time == nil {
-		a.Time = Int(defaultTransitionTime)
+		a.Time = intPtr(defaultTransitionTime)
 	}
 
 	if a.Display == "" {
@@ -120,7 +120,7 @@ func Toggle(event string, args *ToggleArgs) Operation {
 	}
 
 	if a.Blocking == nil {
-		a.Blocking = Bool(true)
+		a.Blocking = boolPtr(true)
 	}
 
 	return Operation{"toggle", a}
@@ -149,17 +149,17 @@ func Show(args *ShowArgs) Operation {
 	}
 
 	a.Transition = [3][]string{
-		classNames(args.Transition[0]),
-		classNames(args.Transition[1]),
-		classNames(args.Transition[2]),
+		classNames(a.ShowArgs.Transition[0]),
+		classNames(a.ShowArgs.Transition[1]),
+		classNames(a.ShowArgs.Transition[2]),
 	}
 
 	if a.Time == nil {
-		a.Time = Int(defaultTransitionTime)
+		a.Time = intPtr(defaultTransitionTime)
 	}
 
 	if a.Blocking == nil {
-		a.Blocking = Bool(true)
+		a.Blocking = boolPtr(true)
 	}
 
 	return Operation{"show", a}
@@ -187,17 +187,17 @@ func Hide(args *HideArgs) Operation {
 	}
 
 	a.Transition = [3][]string{
-		classNames(args.Transition[0]),
-		classNames(args.Transition[1]),
-		classNames(args.Transition[2]),
+		classNames(a.HideArgs.Transition[0]),
+		classNames(a.HideArgs.Transition[1]),
+		classNames(a.HideArgs.Transition[2]),
 	}
 
 	if a.Time == nil {
-		a.Time = Int(defaultTransitionTime)
+		a.Time = intPtr(defaultTransitionTime)
 	}
 
 	if a.Blocking == nil {
-		a.Blocking = Bool(true)
+		a.Blocking = boolPtr(true)
 	}
 
 	return Operation{"hide", a}
@@ -227,17 +227,17 @@ func AddClass(names string, args *AddClassArgs) Operation {
 	}
 
 	a.Transition = [3][]string{
-		classNames(args.Transition[0]),
-		classNames(args.Transition[1]),
-		classNames(args.Transition[2]),
+		classNames(a.AddClassArgs.Transition[0]),
+		classNames(a.AddClassArgs.Transition[1]),
+		classNames(a.AddClassArgs.Transition[2]),
 	}
 
 	if a.Time == nil {
-		a.Time = Int(defaultTransitionTime)
+		a.Time = intPtr(defaultTransitionTime)
 	}
 
 	if a.Blocking == nil {
-		a.Blocking = Bool(true)
+		a.Blocking = boolPtr(true)
 	}
 
 	return Operation{"add_class", a}
@@ -267,17 +267,17 @@ func ToggleClass(names string, args *ToggleClassArgs) Operation {
 	}
 
 	a.Transition = [3][]string{
-		classNames(args.Transition[0]),
-		classNames(args.Transition[1]),
-		classNames(args.Transition[2]),
+		classNames(a.ToggleClassArgs.Transition[0]),
+		classNames(a.ToggleClassArgs.Transition[1]),
+		classNames(a.ToggleClassArgs.Transition[2]),
 	}
 
 	if a.Time == nil {
-		a.Time = Int(defaultTransitionTime)
+		a.Time = intPtr(defaultTransitionTime)
 	}
 
 	if a.Blocking == nil {
-		a.Blocking = Bool(true)
+		a.Blocking = boolPtr(true)
 	}
 
 	return Operation{"toggle_class", a}
@@ -307,17 +307,17 @@ func RemoveClass(names string, args *RemoveClassArgs) Operation {
 	}
 
 	a.Transition = [3][]string{
-		classNames(args.Transition[0]),
-		classNames(args.Transition[1]),
-		classNames(args.Transition[2]),
+		classNames(a.RemoveClassArgs.Transition[0]),
+		classNames(a.RemoveClassArgs.Transition[1]),
+		classNames(a.RemoveClassArgs.Transition[2]),
 	}
 
 	if a.Time == nil {
-		args.Time = Int(defaultTransitionTime)
+		args.Time = intPtr(defaultTransitionTime)
 	}
 
 	if a.Blocking == nil {
-		a.Blocking = Bool(true)
+		a.Blocking = boolPtr(true)
 	}
 
 	return Operation{"remove_class", a}
@@ -349,11 +349,11 @@ func Transition(transition [3]string, args *TransitionArgs) Operation {
 	}
 
 	if a.Time == nil {
-		a.Time = Int(defaultTransitionTime)
+		a.Time = intPtr(defaultTransitionTime)
 	}
 
 	if a.Blocking == nil {
-		a.Blocking = Bool(true)
+		a.Blocking = boolPtr(true)
 	}
 
 	return Operation{"transition", a}
@@ -396,7 +396,7 @@ func RemoveAttr(attr string, args *RemoveAttrArgs) Operation {
 		RemoveAttrArgs: args,
 	}
 
-	if a.RemoveAttrArgs != nil {
+	if a.RemoveAttrArgs == nil {
 		a.RemoveAttrArgs = &RemoveAttrArgs{}
 	}
 
@@ -550,11 +550,11 @@ func Exec(attr string, args *ExecArgs) Operation {
 	return Operation{"exec", a}
 }
 
-func Bool(b bool) *bool {
+func boolPtr(b bool) *bool {
 	return &b
 }
 
-func Int(i int) *int {
+func intPtr(i int) *int {
 	return &i
 }
 
